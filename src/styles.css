@@ -2,5 +2,8 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
 body{
-    padding-top:30px;
+    padding-top:70px;
+}
+.dropdown-toggle{
+    cursor: pointer;
 }
