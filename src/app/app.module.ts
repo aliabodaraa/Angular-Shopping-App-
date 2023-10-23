@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -14,19 +14,57 @@ import { AdminProductsComponent } from './admin/admin-products/admin-products.co
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RouterModule, Routes } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateFn,
+  RouterModule,
+  RouterStateSnapshot,
+  Routes,
+} from '@angular/router';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { enviroment } from 'src/enviroments/enviroment.prod';
+import { AuthGuard } from './auth-guard.service';
+
+const checkUserLoggingStatus: CanActivateFn = () => {
+  return inject(AuthGuard).canActivate();
+};
 const routes: Routes = [
+  //Guests Routes
   { path: '', component: HomeComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'shopping-cart', component: ShoppingCartComponent },
-  { path: 'check-out', component: CheckOutComponent },
-  { path: 'order-success', component: OrderSuccessComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'my/orders', component: MyOrdersComponent },
-  { path: 'admin/products', component: AdminProductsComponent },
-  { path: 'admin/orders', component: AdminOrdersComponent },
+
+  //Auth Routes
+  {
+    path: 'check-out',
+    component: CheckOutComponent,
+    canActivate: [checkUserLoggingStatus],
+  },
+  {
+    path: 'order-success',
+    component: OrderSuccessComponent,
+    canActivate: [checkUserLoggingStatus],
+  },
+  {
+    path: 'my/orders',
+    component: MyOrdersComponent,
+    canActivate: [checkUserLoggingStatus],
+  },
+
+  //Admin Routes
+  {
+    path: 'admin/products',
+    component: AdminProductsComponent,
+    canActivate: [checkUserLoggingStatus],
+  },
+  {
+    path: 'admin/orders',
+    component: AdminOrdersComponent,
+    canActivate: [checkUserLoggingStatus],
+  },
+
+  //Notfound Routes
   { path: '**', component: NotFoundComponent },
 ];
 @NgModule({
