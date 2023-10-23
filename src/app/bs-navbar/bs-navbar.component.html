@@ -9,18 +9,24 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" routerLink="/shopping-cart">shopping cart</a>
           </li>
-          <li ngbDropdown class="nav-item dropdown">
+          <ng-template #anonymousUser>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" routerLink="/login">Login</a>
+            </li>
+          </ng-template>
+          
+          <li *ngIf="user$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
             <a ngbDropdownToggle class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-            tabindex="-1">username</a>
+            tabindex="-1">{{user?.displayName||user?.email||"guest options"}}</a>
             <ul ngbDropdownMenu>
               <li><a class="dropdown-item" routerLink="/my/orders">My Orders</a></li>
               <li><a class="dropdown-item" routerLink="/admin/orders">Mange Orders</a></li>
               <li><a class="dropdown-item" routerLink="/admin/products">Mange Products</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item">Logout</a></li>
+              <li *ngIf="user?.email"><a class="dropdown-item" (click)="logout()">Logout</a></li>
             </ul>
           </li>
-        </ul>
+        </ul>  {{(user$ | async)?.email}}
         <!-- <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
@@ -28,3 +34,5 @@
       </div>
     </div>
   </nav>
+
+ 

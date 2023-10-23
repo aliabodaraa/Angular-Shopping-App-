@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-
-import { enviroment } from 'src/enviroments/enviroment.prod';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -20,7 +15,8 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
-
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { enviroment } from 'src/enviroments/enviroment.prod';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'products', component: ProductsComponent },
@@ -49,11 +45,10 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(enviroment.firebase),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
     NgbModule,
     RouterModule.forRoot(routes),
+    AngularFireModule.initializeApp(enviroment.firebase),
+    AngularFireAuthModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
