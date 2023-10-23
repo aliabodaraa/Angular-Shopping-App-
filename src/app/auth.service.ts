@@ -5,24 +5,29 @@ import { GoogleAuthProvider, getAuth, signInWithRedirect } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { enviroment } from 'src/enviroments/enviroment.prod';
 import * as firebase from 'firebase/auth';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user$: Observable<firebase.UserInfo | null>;
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.user$ = afAuth.authState;
   }
   async login() {
+    let getReturnUrl =
+      this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+    localStorage.setItem('returnUrl', getReturnUrl);
     const provider = new GoogleAuthProvider();
-    await signInWithRedirect(
+    return await signInWithRedirect(
       getAuth(initializeApp(enviroment.firebase)),
       provider
-    ).catch((error) => {
-      console.log(error.code);
-      alert(error.message);
-    });
+    );
   }
   async logout() {
     return this.afAuth

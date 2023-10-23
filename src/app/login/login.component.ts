@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   constructor(private auth: AuthService, private router: Router) {}
 
-  login() {
-    this.auth.login().then((result) => {
-      console.log(result);
+  async login() {
+    await this.auth.login().then((result) => {
       this.router.navigate(['/']);
+      console.log('result', result);
     });
   }
 }

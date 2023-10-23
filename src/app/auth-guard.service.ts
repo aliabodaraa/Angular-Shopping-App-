@@ -7,12 +7,14 @@ import { map } from 'rxjs/operators';
 })
 export class AuthGuard {
   constructor(private auth: AuthService, private router: Router) {}
-  canActivate() {
+  canActivate(previousFailedUrl: string) {
     return this.auth.user$?.pipe(
       map((user) => {
         console.log(user);
         if (user?.email) return true;
-        //this.router.navigate(['/login']);
+        this.router.navigate(['/login'], {
+          queryParams: { returnUrl: previousFailedUrl },
+        });
         return false;
       })
     );

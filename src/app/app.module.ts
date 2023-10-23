@@ -25,8 +25,11 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { enviroment } from 'src/enviroments/enviroment.prod';
 import { AuthGuard } from './auth-guard.service';
 
-const checkUserLoggingStatus: CanActivateFn = () => {
-  return inject(AuthGuard).canActivate();
+const checkUserLoggingStatus: CanActivateFn = (
+  routeTo: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  return inject(AuthGuard).canActivate(state.url);
 };
 const routes: Routes = [
   //Guests Routes
