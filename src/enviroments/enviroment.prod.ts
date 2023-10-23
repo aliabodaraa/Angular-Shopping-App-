@@ -11,6 +11,7 @@ export const enviroment = {
     // measurementId: 'G-4992WB1D5J',
     apiKey: 'AIzaSyA71AtCPTH7vvZp3zBXGfhro7Re56DtsdQ',
     authDomain: 'oshop2-1a541.firebaseapp.com',
+    databaseURL: 'https://oshop2-1a541-default-rtdb.firebaseio.com',
     projectId: 'oshop2-1a541',
     storageBucket: 'oshop2-1a541.appspot.com',
     messagingSenderId: '441336204507',

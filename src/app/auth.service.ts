@@ -5,18 +5,15 @@ import { GoogleAuthProvider, getAuth, signInWithRedirect } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { enviroment } from 'src/enviroments/enviroment.prod';
 import * as firebase from 'firebase/auth';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  //acheive authentication
   user$: Observable<firebase.UserInfo | null>;
-  constructor(
-    private afAuth: AngularFireAuth,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
+  constructor(private afAuth: AngularFireAuth, private route: ActivatedRoute) {
     this.user$ = afAuth.authState;
   }
   async login() {

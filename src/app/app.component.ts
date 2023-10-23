@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,14 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent {
   title = 'oshop';
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(
+    private userService: UserService,
+    private auth: AuthService,
+    private router: Router
+  ) {
     this.auth.user$.subscribe((user) => {
       if (user) {
-        console.log('here');
+        this.userService.save(user);
         let getReturnUrlParam = localStorage.getItem('returnUrl');
         this.router.navigate([`${getReturnUrlParam}`]);
       }

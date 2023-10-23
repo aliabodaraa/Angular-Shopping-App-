@@ -2,6 +2,8 @@ import { NgModule, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
