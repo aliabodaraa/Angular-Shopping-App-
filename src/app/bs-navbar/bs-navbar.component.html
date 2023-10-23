@@ -15,7 +15,7 @@
             </li>
           </ng-template>
           
-          <li *ngIf="user$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
+          <li *ngIf="auth.user$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
             <a ngbDropdownToggle class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
             tabindex="-1">{{user?.displayName||user?.email||"guest options"}}</a>
             <ul ngbDropdownMenu>
@@ -26,7 +26,7 @@
               <li *ngIf="user?.email"><a class="dropdown-item" (click)="logout()">Logout</a></li>
             </ul>
           </li>
-        </ul>  {{(user$ | async)?.email}}
+        </ul>  {{(auth.user$ | async)?.email}}
         <!-- <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
