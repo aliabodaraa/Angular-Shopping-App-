@@ -16,11 +16,15 @@ export class AppComponent {
     private router: Router
   ) {
     this.auth.user$.subscribe((user) => {
-      if (user) {
-        this.userService.save(user);
-        let getReturnUrlParam = localStorage.getItem('returnUrl');
-        this.router.navigate([`${getReturnUrlParam}`]);
-      }
+      if (!user) return;
+
+      this.userService.save(user);
+
+      let getReturnUrlParam = localStorage.getItem('returnUrl');
+      if (!getReturnUrlParam) return; //to avoid redirection to home each time we reload the page so we want this functionality to be applied once after the user logged successfully
+
+      localStorage.removeItem('returnUrl');
+      this.router.navigate([`${getReturnUrlParam}`]);
     });
   }
 }
