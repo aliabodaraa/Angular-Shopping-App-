@@ -9,6 +9,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" routerLink="/shopping-cart">shopping cart</a>
           </li>
+          
           <ng-template #anonymousUser>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" routerLink="/login">Login</a>
@@ -17,13 +18,13 @@
           
           <li *ngIf="auth.user$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
             <a ngbDropdownToggle class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-            tabindex="-1">{{user?.displayName||user?.email||"guest options"}}</a>
+            tabindex="-1">{{user?.displayName||user?.email}}</a>
             <ul ngbDropdownMenu>
               <li><a class="dropdown-item" routerLink="/my/orders">My Orders</a></li>
               <li><a class="dropdown-item" routerLink="/admin/orders">Mange Orders</a></li>
               <li><a class="dropdown-item" routerLink="/admin/products">Mange Products</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li *ngIf="user?.email"><a class="dropdown-item" (click)="logout()">Logout</a></li>
+              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
             </ul>
           </li>
         </ul>

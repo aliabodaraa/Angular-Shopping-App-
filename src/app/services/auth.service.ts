@@ -4,37 +4,31 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider, getAuth, signInWithRedirect } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { enviroment } from 'src/enviroments/enviroment.prod';
-import * as firebase from 'firebase/auth';
 import { ActivatedRoute } from '@angular/router';
+import { AppUser } from '../models/app-user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   //acheive authentication
-  user$: Observable<firebase.UserInfo | null>;
+  user$: Observable<AppUser | null>;
   constructor(private afAuth: AngularFireAuth, private route: ActivatedRoute) {
-    this.user$ = afAuth.authState;
+    this.user$ = afAuth.authState as unknown as Observable<AppUser>;
   }
-  async login() {
+  login() {
     let getReturnUrl =
       this.route.snapshot.queryParamMap.get('returnUrl') || '/';
     localStorage.setItem('returnUrl', getReturnUrl);
+
     const provider = new GoogleAuthProvider();
-    return await signInWithRedirect(
+    return signInWithRedirect(
       getAuth(initializeApp(enviroment.firebase)),
       provider
     );
   }
-  async logout() {
-    return this.afAuth
-      .signOut()
-      .then(() => {
-        console.log('Logout Sucessfully');
-      })
-      .catch(() => {
-        console.log('Logout Failed');
-      });
+  logout() {
+    this.afAuth.signOut();
   }
 }
 // signInWithEmailAndPassword(

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,7 +11,6 @@ export class AuthGuard {
   canActivate(previousFailedUrl: string) {
     return this.auth.user$?.pipe(
       map((user) => {
-        console.log(user);
         if (user?.email) return true;
         this.router.navigate(['/login'], {
           queryParams: { returnUrl: previousFailedUrl },

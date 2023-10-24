@@ -25,7 +25,8 @@ import {
 } from '@angular/router';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { enviroment } from 'src/enviroments/enviroment.prod';
-import { AuthGuard } from './auth-guard.service';
+import { AuthGuard } from './services/auth-guard.service';
+import { AdminAuthGuard } from './services/admin-auth-guard.service';
 
 const checkUserLoggingStatus: CanActivateFn = (
   routeTo: ActivatedRouteSnapshot,
@@ -33,6 +34,10 @@ const checkUserLoggingStatus: CanActivateFn = (
 ) => {
   return inject(AuthGuard).canActivate(state.url);
 };
+const checkUserIsAdmin: CanActivateFn = () => {
+  return inject(AdminAuthGuard).canActivate();
+};
+
 const routes: Routes = [
   //Guests Routes
   { path: '', component: HomeComponent },
@@ -61,12 +66,12 @@ const routes: Routes = [
   {
     path: 'admin/products',
     component: AdminProductsComponent,
-    canActivate: [checkUserLoggingStatus],
+    canActivate: [checkUserLoggingStatus, checkUserIsAdmin],
   },
   {
     path: 'admin/orders',
     component: AdminOrdersComponent,
-    canActivate: [checkUserLoggingStatus],
+    canActivate: [checkUserLoggingStatus, checkUserIsAdmin],
   },
 
   //Notfound Routes

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,12 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private route: ActivatedRoute) {}
 
-  async login() {
-    await this.auth.login().then((result) => {
-      this.router.navigate(['/']);
-      console.log('result', result);
-    });
+  login() {
+    this.auth.login();
   }
 }

@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import * as firebase from 'firebase/auth';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'bs-navbar',
   templateUrl: './bs-navbar.component.html',
@@ -9,7 +7,7 @@ import { AuthService } from '../auth.service';
 })
 export class BsNavbarComponent {
   constructor(public auth: AuthService) {}
-  async logout() {
+  logout() {
     this.auth.logout();
   }
 }
