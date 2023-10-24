@@ -15,14 +15,36 @@
               <a class="nav-link active" aria-current="page" routerLink="/login">Login</a>
             </li>
           </ng-template>
-          
-          <li *ngIf="auth.user$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
+          <!-- 
+            in the following we put 
+                      <li *ngIf="appUserBs as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
+            instead of
+                      <li *ngIf="auth.appUser$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
+
+            async pipe marks this template for change detection every time there is a new value in this observable.
+            when we use this async pipe in (auth.appUser$), every time there is a new value in this observable angular is going to run change detection.
+            So it thinks something is modified, the state of the application is changed. So it's going to walk down this tree of objects here and rerender them.
+            Now, the tricky situation here is that in this property we have used switchmap. start from this user observable.
+            And then call switch map to map this observable to another observable.
+            Now, the problem here is that this new observable is going to emit another value that casing the user observable to change for this change accordingly
+            And this will cause Angular to run change detection on this template.
+            So it's going to start again. It's going to evaluate all these expressions it gets here.
+            So it tries to apply the async pipe on this observable, which means we go back to our auth service again, we start here and get a new value.
+            And then from there we start here, get a new value and then use switchMap to map it to a new observable. So we end up in some kind of infinite loop.
+            This is something you need to be aware of when you use the switch map operator and map one observable to another, and then use that with the async pipe in a template.
+            So to solve this problem. I'm going to change this implementation.
+            And instead of using the async pipe here, I'm going to subscribe to this observable once in our component (in bs-navbar constructor)
+            and pass that as an object to this template. This way, because we don't use the async pipe change detection happens only once the first time this
+           -->
+          <li *ngIf="appUserBs as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
             <a ngbDropdownToggle class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
             tabindex="-1">{{user?.displayName||user?.email}}</a>
             <ul ngbDropdownMenu>
               <li><a class="dropdown-item" routerLink="/my/orders">My Orders</a></li>
-              <li><a class="dropdown-item" routerLink="/admin/orders">Mange Orders</a></li>
-              <li><a class="dropdown-item" routerLink="/admin/products">Mange Products</a></li>
+              <ng-container *ngIf="user.isAdmin">
+                <li><a class="dropdown-item" routerLink="/admin/orders">Mange Orders</a></li>
+                <li><a class="dropdown-item" routerLink="/admin/products">Mange Products</a></li>
+              </ng-container>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
             </ul>

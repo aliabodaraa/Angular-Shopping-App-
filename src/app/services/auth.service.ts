@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider, getAuth, signInWithRedirect } from 'firebase/auth';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { enviroment } from 'src/enviroments/enviroment.prod';
 import { ActivatedRoute } from '@angular/router';
 import { AppUser } from '../models/app-user';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,11 @@ import { AppUser } from '../models/app-user';
 export class AuthService {
   //acheive authentication
   user$: Observable<AppUser | null>;
-  constructor(private afAuth: AngularFireAuth, private route: ActivatedRoute) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private route: ActivatedRoute,
+    private UserService: UserService
+  ) {
     this.user$ = afAuth.authState as unknown as Observable<AppUser>;
   }
   login() {
@@ -29,6 +34,14 @@ export class AuthService {
   }
   logout() {
     this.afAuth.signOut();
+  }
+  get appUser$(): Observable<AppUser | null> {
+    return this.user$.pipe(
+      switchMap((user) => {
+        if (user) return this.UserService.get(user.uid);
+        else return of(null);
+      })
+    );
   }
 }
 // signInWithEmailAndPassword(

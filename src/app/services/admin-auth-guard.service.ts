@@ -9,13 +9,10 @@ import { UserService } from './user.service';
 export class AdminAuthGuard {
   constructor(private auth: AuthService, private UserService: UserService) {}
   canActivate(): Observable<boolean> {
-    return this.auth.user$.pipe(
-      switchMap((user) => {
-        return this.UserService.get(user?.uid!).valueChanges();
-      }),
+    return this.auth.appUser$.pipe(
       map((authUser) => {
-        console.log(authUser);
-        return authUser?.isAdmin as boolean;
+        if (!authUser) return false;
+        return authUser.isAdmin;
       })
     );
   }

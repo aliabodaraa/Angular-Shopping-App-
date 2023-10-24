@@ -4,6 +4,7 @@ import {
   AngularFireObject,
 } from '@angular/fire/compat/database';
 import { AppUser } from '../models/app-user';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,9 @@ export class UserService {
     });
   }
 
-  get(uid: string): AngularFireObject<AppUser> {
-    return this.db.object('/users/' + uid);
+  get(uid: string): Observable<AppUser> {
+    return this.db
+      .object<AppUser>('/users/' + uid)
+      .valueChanges() as Observable<AppUser>;
   }
 }
