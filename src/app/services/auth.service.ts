@@ -13,7 +13,8 @@ import { UserService } from './user.service';
 })
 export class AuthService {
   //acheive authentication
-  user$: Observable<AppUser | null>;
+  user$: Observable<AppUser>;
+
   constructor(
     private afAuth: AngularFireAuth,
     private route: ActivatedRoute,
@@ -21,6 +22,7 @@ export class AuthService {
   ) {
     this.user$ = afAuth.authState as unknown as Observable<AppUser>;
   }
+
   login() {
     let getReturnUrl =
       this.route.snapshot.queryParamMap.get('returnUrl') || '/';
@@ -32,10 +34,13 @@ export class AuthService {
       provider
     );
   }
+
   logout() {
+    this.UserService.isUserExist('asas');
     this.afAuth.signOut();
   }
-  get appUser$(): Observable<AppUser | null> {
+
+  get appUser$(): Observable<AppUser> {
     return this.user$.pipe(
       switchMap((user) => {
         if (user) return this.UserService.get(user.uid);
@@ -44,14 +49,3 @@ export class AuthService {
     );
   }
 }
-// signInWithEmailAndPassword(
-//   getAuth(initializeApp(enviroment.firebase)),
-//   'abodaraaali50@gmail.com',
-//   'MasterR540'
-// ).then((data) => {
-//   console.log('succes Sign-In');
-//   console.log(data);
-//   console.log(getAuth(initializeApp(enviroment.firebase)).currentUser);
-// });
-
-// this.afAuth.signInWithRedirect(new GoogleAuthProvider());

@@ -1,13 +1,33 @@
 
 <button 
-  (click)="loginProvider()"
-  class="btn btn-primary">Login with Google</button>
+  (click)="registerProvider()"
+  class="btn btn-primary">Register with Google</button>
   
-<form [formGroup]="form" (ngSubmit)="login()">
+<form [formGroup]="form" (ngSubmit)="register()">
   <!-- Form Level Errors Validations-->
-  <div *ngIf="form.errors?.['invalidLogin']" class="alert alert-warning">
-      the username or password is invalid
-  </div>
+    <div *ngIf="form.errors?.['invalidRegister']" class="alert alert-warning">
+        the Email or password is invalid
+    </div>
+
+
+    <div class="form-group">
+        <label for="email" class="form-label">email</label>
+        <input
+        formControlName="email"
+        type="text" 
+        class="form-control" 
+        name="email" 
+        id="email">
+    </div>
+    <!-- show message will the uniqueness proccess is processing, any formControl Object has a property called "pending" that will return true if at least one asyncValidator is in progress-->
+    <div *ngIf="accessEmail?.pending" class="alert alert-info">Checking for uniqueness ...</div>
+    <div *ngIf="accessEmail?.touched && accessEmail?.invalid" class="alert alert-danger">
+        <div *ngIf="accessEmail?.errors?.['required']">Email is Required</div>
+        <!-- Custom Async Directive -->
+        <div *ngIf="accessEmail?.errors?.['shouldBeUniqueAsync']">Should Be Unique Async</div>
+    </div>
+
+
   <div class="form-group">
       <label for="username" class="form-label">User Name</label>
       <input
@@ -40,5 +60,5 @@
       <div *ngIf="accessPassword?.errors?.['cannotContainSpace']">cannot contain  space</div>
   </div>
 
-  <button type="submit" class="btn btn-warning" [disabled]="!form.valid">Login</button>
+  <button type="submit" class="btn btn-warning" [disabled]="!form.valid">Register</button>
 </form>

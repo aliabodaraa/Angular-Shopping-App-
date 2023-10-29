@@ -11,7 +11,7 @@ export class AuthGuard {
   canActivate(previousFailedUrl: string) {
     return this.auth.user$?.pipe(
       map((user) => {
-        if (user?.email) return true;
+        if (user) return true;
         this.router.navigate(['/login'], {
           queryParams: { returnUrl: previousFailedUrl },
         });

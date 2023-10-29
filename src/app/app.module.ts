@@ -12,7 +12,6 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
-import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +26,12 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { enviroment } from 'src/enviroments/enviroment.prod';
 import { AuthGuard } from './services/auth-guard.service';
 import { AdminAuthGuard } from './services/admin-auth-guard.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginValidator } from './login/login.validators';
+import { RegisterComponent } from './register/register.component';
+import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
+import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { CategoryFormComponent } from './admin/category-form/category-form.component';
 
 const checkUserLoggingStatus: CanActivateFn = (
   routeTo: ActivatedRouteSnapshot,
@@ -44,6 +49,7 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'shopping-cart', component: ShoppingCartComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
 
   //Auth Routes
   {
@@ -63,6 +69,21 @@ const routes: Routes = [
   },
 
   //Admin Routes
+  {
+    path: 'admin/categories/new',
+    component: CategoryFormComponent,
+    canActivate: [checkUserLoggingStatus, checkUserIsAdmin],
+  },
+  {
+    path: 'admin/products/new',
+    component: ProductFormComponent,
+    canActivate: [checkUserLoggingStatus, checkUserIsAdmin],
+  },
+  {
+    path: 'admin/products/:id',
+    component: ProductFormComponent,
+    canActivate: [checkUserLoggingStatus, checkUserIsAdmin],
+  },
   {
     path: 'admin/products',
     component: AdminProductsComponent,
@@ -90,6 +111,9 @@ const routes: Routes = [
     AdminProductsComponent,
     AdminOrdersComponent,
     LoginComponent,
+    RegisterComponent,
+    ProductFormComponent,
+    CategoryFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,6 +121,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(enviroment.firebase),
     AngularFireAuthModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,0 +1,18 @@
+<p>category-form works!</p>
+<form #f="ngForm" (ngSubmit)="createCategory(f)">
+    <div class="form-group">
+        <label for="categoryName" class="form-label">Category Name :</label>
+        <input #categoryName="ngModel" 
+        [(ngModel)]="category.name" 
+        type="text" 
+        class="form-control" 
+        name="name" 
+        id="categoryName" 
+        aria-describedby="categoryNameHelpId" 
+        placeholder="enter category Name" required>
+        <div class="alert alert-danger" *ngIf="categoryName.touched && categoryName.invalid">
+            <div *ngIf="categoryName.errors?.['required']">category Name is required.</div>
+        </div>
+        <button type="submit" class="btn btn-warning">create</button>
+    </div>
+</form>

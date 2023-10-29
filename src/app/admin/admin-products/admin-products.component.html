@@ -1,1 +1,78 @@
-<p>admin-products works!</p>
+<p>
+  <a routerLink="/admin/categories/new" class="btn btn-warning">New Category</a>
+  <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
+</p>
+<p>
+  <input 
+    #query
+    (keyup)="filter(query.value)"
+    type="text" class="form-control" placeholder="Search...">
+</p>
+<div class="table-responsive-md">
+  <table class="table table-striped
+  table-hover	
+  table-borderless
+  table-primary
+  align-middle">
+    <thead class="table-light">
+      <caption>Table Name</caption>
+      <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Operations</th>
+      </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngIf="products_filtered.length>0; else noProductsMatch">
+          <ng-container #ProductsMatch class="table-primary" *ngFor="let product of products_filtered; let index=index">
+            <td scope="row">{{product.title}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.category}}</td>
+            <td>
+              <a (click)="navigateToProduct(index)" class="btn btn-primary">Edit</a>
+              <button type="button" (click)="delete(index)" class="btn btn-danger">Delete</button>
+            </td>
+          </ng-container>
+        </tr>
+        <ng-template #noProductsMatch><tr class="col-md-12">No Products Match</tr></ng-template>
+      </tbody>
+      <tfoot>
+        
+      </tfoot>
+  </table>
+</div>
+
+<!-- <data-table
+  [items]="items"
+  [itemCount]="itemCount"
+  (reload)="reloadItems($event)">
+  <data-table-column
+    [property]="'title'"  
+    [header]="'Title'"
+    [sortable]="true"
+    [resizable]="true"
+  >
+  </data-table-column>
+  
+  <data-table-column
+    [property]="'price'"  
+    [header]="'Price'"
+    [sortable]="true"
+    [resizable]="true"
+  >
+    <ng-template #dataTableCell let-item="item">
+      {{ item.price | currency:'USD':true }}
+    </ng-template>
+  </data-table-column>
+
+  <data-table-column
+    [property]="'$key'"  
+  >
+    <ng-template #dataTableCell let-item="item">
+      <a [routerLink]="['/admin/products/', item.$key]">Edit</a>
+    </ng-template>
+  </data-table-column>
+
+</data-table> -->
+

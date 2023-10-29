@@ -7,7 +7,7 @@ import { AppUser } from '../models/app-user';
   styleUrls: ['./bs-navbar.component.css'],
 })
 export class BsNavbarComponent {
-  appUserBs: AppUser | null = null;
+  appUserBs: AppUser = null;
   constructor(public auth: AuthService) {
     this.auth.appUser$.subscribe((appUser) => (this.appUserBs = appUser));
     // Do we need to unsubscribe here?

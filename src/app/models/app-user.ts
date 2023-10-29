@@ -1,6 +1,6 @@
-export interface AppUser {
-  uid: string;
-  displayName: string;
-  email: string;
+import { UserInfo } from 'firebase/auth';
+
+interface User extends UserInfo {
   isAdmin: boolean;
 }
+export type AppUser = User | null;
