@@ -23,16 +23,16 @@ export class AuthService {
     this.user$ = afAuth.authState as unknown as Observable<AppUser>;
   }
 
-  login() {
+  async login() {
     let getReturnUrl =
       this.route.snapshot.queryParamMap.get('returnUrl') || '/';
     localStorage.setItem('returnUrl', getReturnUrl);
 
     const provider = new GoogleAuthProvider();
-    return signInWithRedirect(
+    return await signInWithRedirect(
       getAuth(initializeApp(enviroment.firebase)),
       provider
-    );
+    ).then((x) => console.log(x, 'hello ALI'));
   }
 
   logout() {

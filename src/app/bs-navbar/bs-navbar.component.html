@@ -1,26 +1,27 @@
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/">O</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">O</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/shopping-cart">shopping cart</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/admin/categories/new">New Category</a>
+        </li>
+        <ng-template #anonymousUser>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/shopping-cart">shopping cart</a>
+            <a class="nav-link active" aria-current="page" routerLink="/login">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/admin/categories/new">New Category</a>
+            <a class="nav-link active" aria-current="page" routerLink="/register">Register</a>
           </li>
-          <ng-template #anonymousUser>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" routerLink="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" routerLink="/register">Register</a>
-            </li>
-          </ng-template>
-          <!-- 
+        </ng-template>
+        <!-- 
             in the following we put 
                       <li *ngIf="appUserBs as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
             instead of
@@ -41,26 +42,26 @@
             And instead of using the async pipe here, I'm going to subscribe to this observable once in our component (in bs-navbar constructor)
             and pass that as an object to this template. This way, because we don't use the async pipe change detection happens only once the first time this
            -->
-          <li *ngIf="appUserBs as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
-            <a ngbDropdownToggle class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+        <li *ngIf="appUserBs as user; else anonymousUser" ngbDropdown class="nav-item dropdown">
+          <a ngbDropdownToggle class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
             tabindex="-1">{{user?.displayName||user?.email}}</a>
-            <ul ngbDropdownMenu>
-              <li><a class="dropdown-item" routerLink="/my/orders">My Orders</a></li>
-              <ng-container *ngIf="user.isAdmin">
-                <li><a class="dropdown-item" routerLink="/admin/orders">Mange Orders</a></li>
-                <li><a class="dropdown-item" routerLink="/admin/products">Mange Products</a></li>
-              </ng-container>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
-        <!-- <form class="d-flex">
+          <ul ngbDropdownMenu>
+            <li><a class="dropdown-item" routerLink="/my/orders">My Orders</a></li>
+            <ng-container *ngIf="user.isAdmin">
+              <li><a class="dropdown-item" routerLink="/admin/orders">Mange Orders</a></li>
+              <li><a class="dropdown-item" routerLink="/admin/products">Mange Products</a></li>
+            </ng-container>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form> -->
-      </div>
     </div>
-  </nav>
-
- 
+  </div>
+</nav>
